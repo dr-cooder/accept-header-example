@@ -12,11 +12,24 @@ const getIndex = (request, response) => {
   respond(request, response, index, 'text/html');
 };
 
-const getCats = (request, response) => {
+const getCats = (request, response, acceptedTypes) => {
   const cat = {
     name: 'Roosevelt',
     age: 13
   };
+
+  if (acceptedTypes[0] === 'text/xml') {
+    /*<response>
+        <name>Roosevelt</name>
+        <age>13</age>
+      </response>*/
+    let responseXML = '<response>';
+    responseXML += `<name>${cat.name}</name>`;
+    responseXML += `<age>${cat.age}</age>`;
+    responseXML += '</response>';
+
+    return respond(request, response, responseXML, 'text/xml');
+  }
 
   const catString = JSON.stringify(cat);
   return respond(request, response, catString, 'application/json')
